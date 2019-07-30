@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300 seconds" debug="false">
+	<!--<variable resource="props/common.properties" />-->
+	<!--默认在/apps/var/logs目录-->
+	<property name="logger.root" value="/apps/var/logs" />
+	<property name="app.name" value="demo"/>
+	<!-- contextName主要是为了区分在一个web容器下部署多个应用启用jmx时，不会出现混乱 -->
+	<contextName>${app.name}</contextName>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoder 默认配置为PatternLayoutEncoder -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!--测试，开发环境需要打印日志 jvm环境变量-Dlogback.debug=true-->
+	<if condition='property("logback.debug").contains("true")'>
+		<then>
+			<appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${logger.root}/${domain:-${app.name}}/debug.log</file>
+				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+					<level>debug</level>
+				</filter>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${logger.root:-/apps/var/logs}/${domain:-${app.name}}/debug.log.%d{yyyyMMdd}</fileNamePattern>
+					<maxHistory>60</maxHistory>
+				</rollingPolicy>
+				<encoder>
+					<pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{36} - %msg%n</pattern>
+					<charset>UTF-8</charset>
+				</encoder>
+			</appender>
+		</then>
+	</if>
+	<appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logger.root}/${domain:-${app.name}}/info.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>info</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.root:-/apps/var/logs}/${domain:-${app.name}}/info.log.%d{yyyyMMdd}</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{36} - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logger.root}/${domain:-${app.name}}/warn.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>warn</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.root:-/apps/var/logs}/${domain:-${app.name}}/warn.log.%d{yyyyMMdd}</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{36} - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logger.root}/${domain:-${app.name}}/error.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>error</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.root:-/apps/var/logs}/${domain:-${app.name}}/error.log.%d{yyyyMMdd}</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<!--<pattern>%-4relative [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+			<!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+			<pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{36} - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<!--开发的时候显示在控制台，其余环境不用显示，如果是非window机器，需要配置环境变量-->
+		<if condition='property("OS").toLowerCase().contains("window")'>
+			<then>
+				<appender-ref ref="STDOUT" />
+			</then>
+		</if>
+		<!--测试，开发环境需要打印日志 jvm环境变量-Dlogback.debug=true-->
+		<if condition='property("logback.debug").contains("true")'>
+			<then>
+				<appender-ref ref="debug" />
+			</then>
+		</if>
+		<appender-ref ref="info" />
+		<appender-ref ref="warn" />
+		<appender-ref ref="error" />
+	</root>
+
+	<!--warn级别才打印-->
+	<logger name="org.quartz.core.JobRunShell" level="WARN" ></logger>
+	<logger name="org.quartz.core.QuartzSchedulerThread" level="WARN" ></logger>
+
+</configuration>

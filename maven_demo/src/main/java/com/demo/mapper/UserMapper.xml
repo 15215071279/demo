@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.demo.entity.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="groupid" property="groupid" jdbcType="BIGINT" />
+    <result column="roleid" property="roleid" jdbcType="BIGINT" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="msisdn" property="msisdn" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="sexs" property="sexs" jdbcType="VARCHAR" />
+    <result column="raddress" property="raddress" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="cardnum" property="cardnum" jdbcType="VARCHAR" />
+    <result column="etime" property="etime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="st" property="st" jdbcType="INTEGER" />
+    <result column="channeltype" property="channeltype" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="rcode" property="rcode" jdbcType="VARCHAR" />
+    <result column="rid" property="rid" jdbcType="BIGINT" />
+    <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
+    <result column="utime" property="utime" jdbcType="TIMESTAMP" />
+    <result column="channelString" property="channelstring" jdbcType="VARCHAR" />
+    <result column="tgy" property="tgy" jdbcType="VARCHAR" />
+    <result column="tgymsisdn" property="tgymsisdn" jdbcType="VARCHAR" />
+    <result column="retirest" property="retirest" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, appid, groupid, roleid, openid, msisdn, username, pwd, img, sexs, raddress, idcard, 
+    cardnum, etime, note, st, channeltype, pid, rcode, rid, ctime, utime, channelString, 
+    tgy, tgymsisdn, retirest
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from w_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from w_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from w_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.demo.entity.UserExample" >
+    delete from w_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.User" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into w_user (appid, groupid, roleid, 
+      openid, msisdn, username, 
+      pwd, img, sexs, raddress, 
+      idcard, cardnum, etime, 
+      note, st, channeltype, 
+      pid, rcode, rid, ctime, 
+      utime, channelString, tgy, 
+      tgymsisdn, retirest)
+    values (#{appid,jdbcType=VARCHAR}, #{groupid,jdbcType=BIGINT}, #{roleid,jdbcType=BIGINT}, 
+      #{openid,jdbcType=VARCHAR}, #{msisdn,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{pwd,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{sexs,jdbcType=VARCHAR}, #{raddress,jdbcType=VARCHAR}, 
+      #{idcard,jdbcType=VARCHAR}, #{cardnum,jdbcType=VARCHAR}, #{etime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{st,jdbcType=INTEGER}, #{channeltype,jdbcType=INTEGER}, 
+      #{pid,jdbcType=BIGINT}, #{rcode,jdbcType=VARCHAR}, #{rid,jdbcType=BIGINT}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{utime,jdbcType=TIMESTAMP}, #{channelstring,jdbcType=VARCHAR}, #{tgy,jdbcType=VARCHAR}, 
+      #{tgymsisdn,jdbcType=VARCHAR}, #{retirest,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.User" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into w_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appid != null" >
+        appid,
+      </if>
+      <if test="groupid != null" >
+        groupid,
+      </if>
+      <if test="roleid != null" >
+        roleid,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="msisdn != null" >
+        msisdn,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="sexs != null" >
+        sexs,
+      </if>
+      <if test="raddress != null" >
+        raddress,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="cardnum != null" >
+        cardnum,
+      </if>
+      <if test="etime != null" >
+        etime,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="st != null" >
+        st,
+      </if>
+      <if test="channeltype != null" >
+        channeltype,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="rcode != null" >
+        rcode,
+      </if>
+      <if test="rid != null" >
+        rid,
+      </if>
+      <if test="ctime != null" >
+        ctime,
+      </if>
+      <if test="utime != null" >
+        utime,
+      </if>
+      <if test="channelstring != null" >
+        channelString,
+      </if>
+      <if test="tgy != null" >
+        tgy,
+      </if>
+      <if test="tgymsisdn != null" >
+        tgymsisdn,
+      </if>
+      <if test="retirest != null" >
+        retirest,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=BIGINT},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="msisdn != null" >
+        #{msisdn,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sexs != null" >
+        #{sexs,jdbcType=VARCHAR},
+      </if>
+      <if test="raddress != null" >
+        #{raddress,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnum != null" >
+        #{cardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="etime != null" >
+        #{etime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="st != null" >
+        #{st,jdbcType=INTEGER},
+      </if>
+      <if test="channeltype != null" >
+        #{channeltype,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="rcode != null" >
+        #{rcode,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        #{rid,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null" >
+        #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelstring != null" >
+        #{channelstring,jdbcType=VARCHAR},
+      </if>
+      <if test="tgy != null" >
+        #{tgy,jdbcType=VARCHAR},
+      </if>
+      <if test="tgymsisdn != null" >
+        #{tgymsisdn,jdbcType=VARCHAR},
+      </if>
+      <if test="retirest != null" >
+        #{retirest,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from w_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from w_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update w_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.appid != null" >
+        appid = #{record.appid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupid != null" >
+        groupid = #{record.groupid,jdbcType=BIGINT},
+      </if>
+      <if test="record.roleid != null" >
+        roleid = #{record.roleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.openid != null" >
+        openid = #{record.openid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msisdn != null" >
+        msisdn = #{record.msisdn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pwd != null" >
+        pwd = #{record.pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.img != null" >
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sexs != null" >
+        sexs = #{record.sexs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.raddress != null" >
+        raddress = #{record.raddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null" >
+        idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardnum != null" >
+        cardnum = #{record.cardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.etime != null" >
+        etime = #{record.etime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.st != null" >
+        st = #{record.st,jdbcType=INTEGER},
+      </if>
+      <if test="record.channeltype != null" >
+        channeltype = #{record.channeltype,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=BIGINT},
+      </if>
+      <if test="record.rcode != null" >
+        rcode = #{record.rcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rid != null" >
+        rid = #{record.rid,jdbcType=BIGINT},
+      </if>
+      <if test="record.ctime != null" >
+        ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.utime != null" >
+        utime = #{record.utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.channelstring != null" >
+        channelString = #{record.channelstring,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tgy != null" >
+        tgy = #{record.tgy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tgymsisdn != null" >
+        tgymsisdn = #{record.tgymsisdn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.retirest != null" >
+        retirest = #{record.retirest,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update w_user
+    set id = #{record.id,jdbcType=BIGINT},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      groupid = #{record.groupid,jdbcType=BIGINT},
+      roleid = #{record.roleid,jdbcType=BIGINT},
+      openid = #{record.openid,jdbcType=VARCHAR},
+      msisdn = #{record.msisdn,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      pwd = #{record.pwd,jdbcType=VARCHAR},
+      img = #{record.img,jdbcType=VARCHAR},
+      sexs = #{record.sexs,jdbcType=VARCHAR},
+      raddress = #{record.raddress,jdbcType=VARCHAR},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      cardnum = #{record.cardnum,jdbcType=VARCHAR},
+      etime = #{record.etime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      st = #{record.st,jdbcType=INTEGER},
+      channeltype = #{record.channeltype,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=BIGINT},
+      rcode = #{record.rcode,jdbcType=VARCHAR},
+      rid = #{record.rid,jdbcType=BIGINT},
+      ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      utime = #{record.utime,jdbcType=TIMESTAMP},
+      channelString = #{record.channelstring,jdbcType=VARCHAR},
+      tgy = #{record.tgy,jdbcType=VARCHAR},
+      tgymsisdn = #{record.tgymsisdn,jdbcType=VARCHAR},
+      retirest = #{record.retirest,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.User" >
+    update w_user
+    <set >
+      <if test="appid != null" >
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        groupid = #{groupid,jdbcType=BIGINT},
+      </if>
+      <if test="roleid != null" >
+        roleid = #{roleid,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="msisdn != null" >
+        msisdn = #{msisdn,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="sexs != null" >
+        sexs = #{sexs,jdbcType=VARCHAR},
+      </if>
+      <if test="raddress != null" >
+        raddress = #{raddress,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnum != null" >
+        cardnum = #{cardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="etime != null" >
+        etime = #{etime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="st != null" >
+        st = #{st,jdbcType=INTEGER},
+      </if>
+      <if test="channeltype != null" >
+        channeltype = #{channeltype,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="rcode != null" >
+        rcode = #{rcode,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null" >
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null" >
+        utime = #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelstring != null" >
+        channelString = #{channelstring,jdbcType=VARCHAR},
+      </if>
+      <if test="tgy != null" >
+        tgy = #{tgy,jdbcType=VARCHAR},
+      </if>
+      <if test="tgymsisdn != null" >
+        tgymsisdn = #{tgymsisdn,jdbcType=VARCHAR},
+      </if>
+      <if test="retirest != null" >
+        retirest = #{retirest,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.User" >
+    update w_user
+    set appid = #{appid,jdbcType=VARCHAR},
+      groupid = #{groupid,jdbcType=BIGINT},
+      roleid = #{roleid,jdbcType=BIGINT},
+      openid = #{openid,jdbcType=VARCHAR},
+      msisdn = #{msisdn,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      sexs = #{sexs,jdbcType=VARCHAR},
+      raddress = #{raddress,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      cardnum = #{cardnum,jdbcType=VARCHAR},
+      etime = #{etime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      st = #{st,jdbcType=INTEGER},
+      channeltype = #{channeltype,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=BIGINT},
+      rcode = #{rcode,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      utime = #{utime,jdbcType=TIMESTAMP},
+      channelString = #{channelstring,jdbcType=VARCHAR},
+      tgy = #{tgy,jdbcType=VARCHAR},
+      tgymsisdn = #{tgymsisdn,jdbcType=VARCHAR},
+      retirest = #{retirest,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
